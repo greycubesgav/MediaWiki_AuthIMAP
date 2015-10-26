@@ -18,7 +18,7 @@
 // Forked from: https://www.mediawiki.org/wiki/Extension:AuthIMAP
 
 // Add these two lines to the bottom of your LocalSettings.php
-// require_once('extensions/Auth_imap.php');
+// require_once('extensions/AuthIMAP/Auth_imap.php');
 // $wgAuth = new Auth_imap(<ServerString>);
 // For PHP Imap ServerString options see: http://php.net/manual/en/function.imap-open.php
 

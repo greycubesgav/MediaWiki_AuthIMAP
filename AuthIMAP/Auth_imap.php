@@ -42,6 +42,19 @@ $wgGroupPermissions['*']['edit']            = false;
 // May have to change to require_once('includes/AuthPlugin.php');
 require_once('includes/AuthPlugin.php');
 
+// Extension credits that show up on Special:Version
+$wgExtensionCredits['other'][] = array(
+   'path' => __FILE__,
+   'name' => 'Auth_imap',
+   'version' => '1.1',
+   'author' => array('Gavin Brown'),
+   'url' => 'https://github.com/greycubesgav/MediaWiki_AuthIMAP',
+   'descriptionmsg' => 'Allow authentication using an IMAP account.' ,
+   'license-name' => 'GPL-3.0+'
+);
+ 
+
+
 class Auth_imap extends AuthPlugin {
 
   private $imapServer = FALSE;
@@ -142,6 +155,9 @@ class Auth_imap extends AuthPlugin {
        return false;
     }
     imap_close($mbox);
+    // Set the _SERVER array username that would be set if we were using Basic auth.
+    global $_SERVER;
+    $_SERVER['REMOTE_USER'] = $username;
     return true;
   }
 
@@ -204,13 +220,19 @@ class Auth_imap extends AuthPlugin {
    * @public
    */
   function initUser(&$user) {
+
+    // Set the username from the server variables
     global $_SERVER;
     $username = $_SERVER['REMOTE_USER'];
 
-    // Using your own methods put the users real name here.
-    $user->setRealName('');
+    // Get the username of the current user
+    // Assumuption: Usernames full usernames are of the form firstname.secondname@domain.com
+    list($name,$domain) = mb_split("\\@", $username);
+    list($firstname,$secondname) = mb_split("\.", $name);
+
+    $user->setRealName($firstname . ' ' . $secondname);
     // Using your own methods put the users email here.
-    $user->setEmail($username . '@example.com');
+    $user->setEmail($username);
 
     $user->mEmailAuthenticated = wfTimestampNow();
     $user->setToken();

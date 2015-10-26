@@ -4,7 +4,26 @@ Extension for MediaWiki that allows authentication from IMAP
 
 ## Installation
 
-#### Install Extension Files
+### Requirements
+
+This plugin requires the php-imap extension to be installed and enabled. 
+
+#### Centos
+
+```bash
+yum install php-imap
+service httpd restart
+```
+
+#### Ubuntu
+
+```bash
+apt-get install php-imap
+php5enmod imap
+a
+```
+
+### Install Extension Files
 Export the repository to you WikiMedia Extensions directory. Usually simply extensions/ within MediaWiki's document root.
 
 ```
@@ -13,7 +32,7 @@ extensions/
 │   └── Auth_imap.php
 ```
 
-#### LocalSettings.php
+### LocalSettings.php
 Include the following two lines at the bottom of your MediaWiki LocalSettings.php file:
 
 

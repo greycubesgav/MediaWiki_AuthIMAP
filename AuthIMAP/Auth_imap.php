@@ -230,9 +230,11 @@ class Auth_imap extends AuthPlugin {
     list($name,$domain) = mb_split("\\@", $username);
     list($firstname,$secondname) = mb_split("\.", $name);
 
-    $user->setRealName($firstname . ' ' . $secondname);
-    // Using your own methods put the users email here.
-    $user->setEmail($username);
+    // Set the user's "Real Name" to be the first and second names cocatinated
+    $user->setRealName(mb_convert_case($firstname . ' ' . $secondname, MB_CASE_TITLE));
+ 
+    // Set the users's email address to be a lowercase of the username
+    $user->setEmail(mb_convert_case($username, MB_CASE_LOWER));
 
     $user->mEmailAuthenticated = wfTimestampNow();
     $user->setToken();

@@ -14,11 +14,14 @@
 // You should have received a copy of the GNU General Public License along with
 // this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-// Copyright 2007 Rusty Burchfield
+// Original Copyright 2007 Rusty Burchfield
+// Forked from: https://www.mediawiki.org/wiki/Extension:AuthIMAP
 
 // Add these two lines to the bottom of your LocalSettings.php
 // require_once('extensions/Auth_imap.php');
-// $wgAuth = new Auth_imap();
+// $wgAuth = new Auth_imap(<ServerString>);
+// For PHP Imap ServerString options see: http://php.net/manual/en/function.imap-open.php
+
 //
 // This plugin requires that your PHP install be compiled with the cclient
 // library.  Please see the PHP manual page below for more information.
@@ -37,9 +40,15 @@ $wgGroupPermissions['*']['edit']            = false;
 
 // The Auth_imap class is an AuthPlugin so make sure we have this included.
 // May have to change to require_once('includes/AuthPlugin.php');
-require_once('AuthPlugin.php');
+require_once('includes/AuthPlugin.php');
 
 class Auth_imap extends AuthPlugin {
+
+  private $imapServer = FALSE;
+
+  function __construct($serverString) {
+     $this->imapServer = $serverString;
+  }
 
   function Auth_imap() {
   }
@@ -124,7 +133,7 @@ class Auth_imap extends AuthPlugin {
    */
   function authenticate($username, $password) {
     // Connect to the IMAP server running on port 143 on example.com using tls
-    $mbox = imap_open("{example.com:143/tls}INBOX",
+    $mbox = imap_open($this->imapServer,
                       $username,
                       $password,
                       OP_HALFOPEN);
@@ -247,3 +256,4 @@ class Auth_imap extends AuthPlugin {
   }
 }
 ?>
+

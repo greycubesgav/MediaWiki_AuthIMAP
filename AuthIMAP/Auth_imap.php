@@ -45,8 +45,8 @@ require_once('includes/AuthPlugin.php');
 // Extension credits that show up on Special:Version
 $wgExtensionCredits['other'][] = array(
    'path' => __FILE__,
-   'name' => 'Auth_imap',
-   'version' => '1.1',
+   'name' => 'AuthIMAP',
+   'version' => '1.2',
    'author' => array('Gavin Brown'),
    'url' => 'https://github.com/greycubesgav/MediaWiki_AuthIMAP',
    'descriptionmsg' => 'Allow authentication using an IMAP account.' ,
